@@ -26,37 +26,32 @@
 
 <script>
 import Swal from 'sweetalert2'
+import UserMixin from './Mixins/UserMixin';
 export default {
-  data: () => ({
-    valid: true,
-    name: '',
-    password: '',
-    cpassword: '',
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 20) || 'Name must be less than 10 characters',
-    ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    passwordRules: [
-      v => !!v || 'Password is required',
-      v => (v && v.length <= 8) || 'Length of Password must be of 8',
-    ],
-    cpasswordRules: [
-      v => !!v || 'Confirm Password is required',
-    ],
-    select: null,
-    items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4',
-    ],
-    checkbox: false,
-  }),
+  mixins: [UserMixin],
+  data() {
+    return {
+      name: '',
+      cpassword: '',
+      checkbox: false,
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 20) || 'Name must be less than 10 characters',
+      ],
+      cpasswordRules: [
+        v => !!v || 'Confirm Password is required',
+        v=>(v && v==this.password)||'Confirm password mismatched'
+      ],
+      select: null,
+      items: [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4',
+      ]
+      
+    }
+  },
 
   methods: {
     onSubmit() {
@@ -68,15 +63,11 @@ export default {
         Swal.fire('Form Submitted Successfully')
       }
       else
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: "Confirm password did't matched",
-        })
+        return false;
     },
     reset() {
       this.$refs.form.reset()
-    },
+    }
   },
 }
 </script>

@@ -18,23 +18,10 @@
 
 <script>
 import Swal from 'sweetalert2'
+import UserMixin from './Mixins/UserMixin';
 export default {
     name: "AppLogin",
-    data: () => ({
-        valid: true,
-        password: '',
-        email: '',
-        emailRules: [
-            v => !!v || 'E-mail is required',
-            v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-        ],
-        passwordRules: [
-            v => !!v || 'Password is required',
-            v => (v && v.length <= 8) || 'Length of Password must be of 8',
-        ],
-        select: null,
-    }),
-
+    mixins: [UserMixin],
     methods: {
         onSubmit() {
             const temp = this.$refs.form.validate()
@@ -47,6 +34,7 @@ export default {
         reset() {
             this.$refs.form.reset()
         },
+
     },
 }
 </script>
