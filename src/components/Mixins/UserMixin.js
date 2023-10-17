@@ -15,7 +15,7 @@ export default {
         select: null, 
         }
     },
-    method: {
+    methods: {
         reset() {
             this.$refs.form.reset()
         },

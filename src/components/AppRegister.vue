@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Swal from 'sweetalert2'
 import UserMixin from './Mixins/UserMixin';
 export default {
@@ -40,7 +41,7 @@ export default {
       ],
       cpasswordRules: [
         v => !!v || 'Confirm Password is required',
-        v=>(v && v==this.password)||'Confirm password mismatched'
+        v => (v && v == this.password) || 'Confirm password mismatched'
       ],
       select: null,
       items: [
@@ -49,21 +50,33 @@ export default {
         'Item 3',
         'Item 4',
       ]
-      
+
     }
   },
 
   methods: {
     onSubmit() {
-      const temp = this.$refs.form.validate()
-      if (!temp)
-        return;
-      if (this.password == this.cpassword) {
-        console.log(`${this.name} ${this.email} ${this.password}`);
-        Swal.fire('Form Submitted Successfully')
+
+      if (this.$refs.form.validate()) {
+        const data = {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          action: 'insertUser'
+        }
+        axios.post('index.php', data).then(({ data }) => {
+          Swal.fire("Success", data.message, "success");
+          window.location.href = 'http://localhost:8080/#/login';
+          // this.$refs.form.reset();
+        }).catch(({ response, message }) => {
+          console.log("response", response, message)
+          Swal.fire("Error", response && response.data ? response.data.message : message, "error");
+        })
+
+      } else {
+        return false
       }
-      else
-        return false;
+
     },
     reset() {
       this.$refs.form.reset()

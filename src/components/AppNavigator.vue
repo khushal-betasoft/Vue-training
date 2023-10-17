@@ -12,29 +12,52 @@
             </router-link>
             <v-spacer></v-spacer>
             <router-link to="/about">
-                <v-btn rounded class="mx-5" color="primary" dark elevation="10">
+                <v-btn rounded class="mx-5" color="primary" dark elevation="10" v-if="isLogin">
                     About
                 </v-btn>
             </router-link>
 
 
             <router-link to="/register">
-                <v-btn rounded color="primary" class="mx-5" dark elevation="10">
+                <v-btn rounded color="primary" class="mx-5" dark elevation="10" v-if="!isLogin">
                     Registration
                 </v-btn>
             </router-link>
             <router-link to="/login">
-                <v-btn rounded color="primary" class="mx-5" dark elevation="10">
+                <v-btn rounded color="primary" class="mx-5" dark elevation="10" v-if="!isLogin">
                     Login
                 </v-btn>
             </router-link>
-
+            <v-btn rounded color="primary" class="mx-5" dark elevation="10" @click="logOut" v-if="isLogin">
+                Logout
+            </v-btn>
         </v-app-bar>
         <v-sheet id="scrolling-techniques" class="overflow-y-auto" max-height="600">
             <v-container style="height: 60px;"></v-container>
         </v-sheet>
     </v-card>
 </template>
+<script>
+export default {
+    mounted() {
+        if (localStorage.getItem('isLogin')) {
+            this.isLogin = localStorage.getItem('isLogin');
+        }
+    },
+    data() {
+        return {
+            isLogin: false
+        }
+    },
+    methods: {
+        logOut() {
+            this.isLogin = false;
+            localStorage.setItem('isLogin', false);
+            window.location.href = 'http://localhost:8080/#/login';
+        }
+    }
+}
+</script>
 <style>
 .v-application a {
     text-decoration: none;
