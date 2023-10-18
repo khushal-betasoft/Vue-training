@@ -62,7 +62,7 @@ export default {
           name: this.name,
           email: this.email,
           password: this.password,
-          action: 'insertUser'
+          action: 'insertUse'
         }
         axios.post('index.php', data).then(({ data }) => {
           Swal.fire("Success", data.message, "success");

@@ -19,41 +19,43 @@
 <script>
 import Swal from 'sweetalert2'
 import UserMixin from './Mixins/UserMixin';
-import middleware from '../Middleware/Auth'
-// import axios from 'axios'
+//  import guest from '../middleware/guest'
+import axios from 'axios'
 export default {
     name: "AppLogin",
     mixins: [UserMixin],
-    middleware: [middleware],
     methods: {
         onSubmit() {
+
             const temp = this.$refs.form.validate()
             if (temp) {
-                localStorage.setItem('isLogin', true);
-                Swal.fire("success", `Successfully Logged In`, "success")
-                window.location.href = 'http://localhost:8080/#/about';
-                location.reload();
-                // const data = {
-                //     fields: {},
-                //     conditions: {
-                //         email: this.email,
-                //         password: this.password,
-                //     },
-                //     action: 'getUser'
-                // }
-                // axios.post("/index.php", data).then(({ data }) => {
-                //     console.log(data);
-                //     if (data.status) {
-                //         Swal.fire("Success", `User Id: ${data.id}Login Successfully`, "success");
-                //         this.$refs.form.reset();
-                //     }
-                //     else {
-                //        
-                //     }
-                // })
-                //     .catch(({ response, message }) => {
-                //         Swal.fire("Error", response && response.data ? response.data.message : message, 'error');
-                //     });
+                //----------------------------
+
+                //----------------------------
+                const data = {
+                    fields: null,
+                    conditions: {
+                        email: this.email,
+                        password: this.password,
+                    },
+                    action: 'getUser'
+                }
+                axios.post("/index.php", data).then(({ data }) => {
+                    if (data.status) {
+
+                        Swal.fire("Success", `User Name: ${data.info[0].name}Login Successfully`, "success").then(() => {
+                            localStorage.setItem('isLogin', 1);
+                            this.$eventBus.$emit("loggedIn", data.info)
+                            this.$router.push({ path: '/home' });
+                        });
+                    }
+                    else {
+                        Swal.fire("Error", data.message, "warning");
+                    }
+                })
+                    .catch(({ response, message }) => {
+                        Swal.fire("Error", response && response.data ? response.data.message : message, 'error');
+                    });
             }
             else {
                 return false;

@@ -40,9 +40,16 @@
 <script>
 export default {
     mounted() {
-        if (localStorage.getItem('isLogin')) {
-            this.isLogin = localStorage.getItem('isLogin');
-        }
+        const isLoggedIn = localStorage.getItem('isLogin');
+        this.isLogin = isLoggedIn && isLoggedIn == "1"
+
+        this.$eventBus.$on("loggedIn", (resp) => {
+            console.log("Received ", resp)
+            this.isLogin = true;
+        })
+    },
+    beforeDestroy() {
+        this.$eventBus.$off("loggedIn")
     },
     data() {
         return {
@@ -52,7 +59,8 @@ export default {
     methods: {
         logOut() {
             this.isLogin = false;
-            localStorage.setItem('isLogin', false);
+            localStorage.setItem('isLogin', 0);
+            console.log(localStorage.getItem('isLogin'));
             window.location.href = 'http://localhost:8080/#/login';
         }
     }

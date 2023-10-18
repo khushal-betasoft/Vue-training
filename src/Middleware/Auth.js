@@ -1,9 +1,12 @@
-export default (to, from, next)=>{
-        const isAuthenticated = localStorage.getItem('isLogin');
-        if (isAuthenticated) {
-            next('/register');
-        }
-        else {
-            from();
-        }
+export default function (to, from, next, router) {
+
+    const isAuthenticated = parseInt(localStorage.getItem('isLogin') ?? "0");
+    console.log("isAuth", isAuthenticated)
+    if (isAuthenticated) {
+        console.log("entered");
+        next();
+    } else {
+        router.push({ path: '/login' });
     }
+
+}

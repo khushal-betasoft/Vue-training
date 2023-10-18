@@ -36,11 +36,15 @@
   </v-card>
 </template>
 <script>
-import middleware from '../Middleware/Auth'
+// import auth from '../middleware/auth'
 export default {
-  middleware: [middleware],
   data: () => ({
     show: false,
   }),
+
+  mounted() {
+    const isLogin = localStorage.getItem("isLogin");
+    this.show = isLogin && isLogin == "1";
+  },
 }
 </script>
