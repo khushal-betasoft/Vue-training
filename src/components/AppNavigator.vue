@@ -31,6 +31,13 @@
             <v-btn rounded color="primary" class="mx-5" dark elevation="10" @click="logOut" v-if="isLogin">
                 Logout
             </v-btn>
+
+            <router-link to="/users">
+                <v-btn rounded color="primary" class="mx-5" dark elevation="10" v-if="isLogin">
+                    Users
+                </v-btn>
+            </router-link>
+
         </v-app-bar>
         <v-sheet id="scrolling-techniques" class="overflow-y-auto" max-height="600">
             <v-container style="height: 60px;"></v-container>

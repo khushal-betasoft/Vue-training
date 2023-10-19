@@ -3,7 +3,7 @@ import AppHome from './components/AppHome.vue'
 import AppRegister from './components/AppRegister.vue'
 import AppAbout from '@/components/AppAbout'
 import AppLogin from './components/AppLogin.vue'
-// import middlewareAuth from '@/Middleware/middlewareAuth'
+import AppDisplayUsers from '@/Views/displayUsers'
 
 const routes = [
     {
@@ -30,11 +30,12 @@ const routes = [
         meta: { requiresAuth: true }
 
     },
-    // {
-    //     name:'AppLogin',
-    //     path:'/about',
-    //     component:AppLogin
-    // }
+    {
+        name: 'AppDisplayUsers',
+        path: '/users',
+        component: AppDisplayUsers,
+        meta: { requiresAuth: true }
+    }
 ]
 
 const router = new VueRouter({
