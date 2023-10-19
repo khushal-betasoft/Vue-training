@@ -72,23 +72,29 @@ export default {
   methods: {
     saveData() {
       const valid = this.$refs.formEdit.validate();
-      alert(this.form.userID);
       if (valid) {
-        if (this.form.userId) {
+        if (this.form.userID) {
           const mainData = {
             action: "updateUser",
             newOne: this.form,
-            prev: this.user,
+            prev: {
+              userID: this.form.userID,
+            },
           };
-          console.log(mainData);
-          this.$axios.post("index.php", mainData).then(({ data }) => {
-            if (data.status) {
-              Swal.fire("Success", "User Updated Successsfully", "success");
-              this.$emit("closed");
-            } else {
-              Swal.fire("Error");
-            }
-          });
+          this.$axios
+            .post("index.php", mainData)
+            .then(({ data }) => {
+              if (data.status) {
+                Swal.fire("Success", "User Updated Successsfully", "success");
+                this.$emit("closed");
+              } else {
+                Swal.fire("Error");
+                console.log(data.message);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           this.form.action = "insertUser";
           this.$axios.post("index.php", this.form).then(({ data }) => {
